@@ -36,7 +36,17 @@ export class AboutComponent implements OnInit {
 
   // Events, returns observable of an Event
   // const click$ = fromEvent(document, 'click');
-  // click$.subscribe((val) => console.log(val));
+  // click$.subscribe(
+  //   (val) => console.log(val),
+  //   // Error out at any time, does not call complete
+  //   (err) => console.error(err),
+  //   // Completed, when the stream emits the last value
+  //   () => console.log('Completed'),
+  //   );
 
+  // We cam unsubscribe at any time with the subscription returned by the subscribe
+  // const timer$ = timer(3000, 1000);
+  // const sub = timer$.subscribe((val) => console.log("stream 1 " + val));
+  // setTimeout(() => sub.unsubscribe(), 5000);
   }
 }
