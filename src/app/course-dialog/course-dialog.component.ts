@@ -1,11 +1,11 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import {Course} from "../model/course";
-import {FormBuilder, Validators, FormGroup} from "@angular/forms";
+import { Course } from "../model/course";
+import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import * as moment from 'moment';
-import {fromEvent} from 'rxjs';
-import {concatMap, distinctUntilChanged, exhaustMap, filter, mergeMap} from 'rxjs/operators';
-import {fromPromise} from 'rxjs/internal-compatibility';
+import { fromEvent } from 'rxjs';
+import { concatMap, distinctUntilChanged, exhaustMap, filter, mergeMap } from 'rxjs/operators';
+import { fromPromise } from 'rxjs/internal-compatibility';
 
 @Component({
     selector: 'course-dialog',
@@ -15,16 +15,16 @@ import {fromPromise} from 'rxjs/internal-compatibility';
 export class CourseDialogComponent implements OnInit, AfterViewInit {
 
     form: FormGroup;
-    course:Course;
+    course: Course;
 
     @ViewChild('saveButton', { static: true }) saveButton: ElementRef;
 
-    @ViewChild('searchInput', { static: true }) searchInput : ElementRef;
+    @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
 
     constructor(
         private fb: FormBuilder,
         private dialogRef: MatDialogRef<CourseDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) course:Course ) {
+        @Inject(MAT_DIALOG_DATA) course: Course) {
 
         this.course = course;
 
@@ -32,19 +32,19 @@ export class CourseDialogComponent implements OnInit, AfterViewInit {
             description: [course.description, Validators.required],
             category: [course.category, Validators.required],
             releasedAt: [moment(), Validators.required],
-            longDescription: [course.longDescription,Validators.required]
+            longDescription: [course.longDescription, Validators.required]
         });
 
     }
 
     ngOnInit() {
         this.form.valueChanges
-        .pipe(
-            filter(() => this.form.valid),
-            concatMap((changes) => this.saveCourse(changes))
-            //mergeMap((changes) => this.saveCourse(changes)) // Same as concat but it doesn't wait
-        )
-        .subscribe();
+            .pipe(
+                filter(() => this.form.valid),
+                concatMap((changes) => this.saveCourse(changes))
+                //mergeMap((changes) => this.saveCourse(changes)) // Same as concat but it doesn't wait
+            )
+            .subscribe();
     }
 
     saveCourse(changes) {
