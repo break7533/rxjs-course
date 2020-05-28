@@ -3,6 +3,7 @@ import { Course } from "../model/course";
 import { interval, Observable, of, timer, noop, VirtualTimeScheduler } from 'rxjs';
 import { catchError, delayWhen, map, retryWhen, shareReplay, tap } from 'rxjs/operators';
 import { createHttpObservable } from '../common/util';
+import { COURSES } from '../../../server/db-data';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit {
         const courses$: Observable<Course[]> = http$.pipe(
             tap(() => console.log('running http')),
             map((res) => Object.values(res['payload'])),
-            shareReplay()
+            shareReplay(),
+            catchError((err) => of([COURSES[0]]))
         );
 
         this.beginnersCourses$ = courses$.pipe(
@@ -34,7 +36,7 @@ export class HomeComponent implements OnInit {
         );
 
         this.advancedCourses$ = courses$.pipe(
-            map((courses) =>  courses.filter((course) => course.category === 'ADVANCED'))
+            map((courses) => courses.filter((course) => course.category === 'ADVANCED'))
         );
     }
 
