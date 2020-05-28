@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { interval, timer, fromEvent, Observable, Observer, noop, of, concat } from 'rxjs';
+import { interval, timer, fromEvent, Observable, Observer, noop, of, concat, merge } from 'rxjs';
 import { createHttpObservable } from '../common/util';
 import { map } from 'rxjs/operators';
 
@@ -65,14 +65,18 @@ export class AboutComponent implements OnInit {
     //     () => console.log('completed'),
     //   );
 
-    const source1$ = of(1, 2, 3);
+    // Contact example
+    // const source1$ = of(1, 2, 3);
+    // const source2$ = of(4, 5, 6);
+    // const source3$ = of(7, 8, 9);
+    // const results$ = concat(source1$, source2$, source3$);
+    // results$.subscribe((val) => console.log(val));
 
-    const source2$ = of(4, 5, 6);
+    // Merge Example
+    const interval1$ = interval(1000);
+    const interval2$ = interval1$.pipe((map((val) => 10 * val)));
+    const result$ = merge(interval1$, interval2$);
+    result$.subscribe(console.log)
 
-    const source3$ = of(7, 8, 9);
-
-    const results$ = concat(source1$, source2$, source3$);
-
-    results$.subscribe((val) => console.log(val));
   }
 }
