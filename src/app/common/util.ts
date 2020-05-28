@@ -1,4 +1,4 @@
-import { Observable, Observer } from "rxjs";
+import { Observable, Observer, of } from "rxjs";
 
 export function createHttpObservable(url: string) {
   return Observable.create((observer: Observer<string>) => {
@@ -6,7 +6,13 @@ export function createHttpObservable(url: string) {
     const signal = controller.signal;
 
     fetch(url, { signal }).then((response) => {
-      return response.json();
+      if(response.ok) {
+        return response.json();
+      }
+      else {
+        observer.error('Request failed with status code ' + response.status);
+      }
+      
     }).then((body) => {
       observer.next(body);
       observer.complete();
